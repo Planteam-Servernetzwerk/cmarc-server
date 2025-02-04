@@ -9,6 +9,7 @@ from cryptography.hazmat.primitives.asymmetric import x25519
 from cryptography.hazmat.primitives.kdf.hkdf import HKDF
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+from cryptography.hazmat.primitives import serialization
 import os
 
 
@@ -30,9 +31,19 @@ def login(username: str, password: str, ed25519_sk: t.Optional[SigningKey] = Non
 
         aes_key = derive_key(password)
 
+        __x25519_sk = x25519_sk.private_bytes(
+            encoding=serialization.Encoding.Raw,
+            format=serialization.PrivateFormat.Raw,
+            encryption_algorithm=serialization.NoEncryption()
+        )
+        __x25519_pk = x25519_pk.public_bytes(
+            encoding=serialization.Encoding.Raw,
+            format=serialization.PublicFormat.Raw
+        )
+
         user = Entity(..., username, password_hash, ..., encrypt_aes(ed25519_sk.encode(), aes_key),
-                      ed25519_pk.encode(), encrypt_aes(x25519_sk.private_bytes_raw(), aes_key),
-                      x25519_pk.public_bytes_raw())
+                      ed25519_pk.encode(), encrypt_aes(__x25519_sk, aes_key),
+                      __x25519_pk)
         user.commit()
 
         return True
