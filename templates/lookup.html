@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>CMARC-Lookup</title>
+        <link rel="shortcut icon" href="/static/img/favicon.svg" type="image/svg+xml">
+        <style>
+            table, th, td {
+                border: 1px solid #000;
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div style="width: 55ch;">
+            <a href="/"><img src="/static/img/logo.svg" alt="" style="width: 100%; margin-bottom: 1em;"></a>
+            <table style="width: 100%;">
+                <tr>
+                    <th>Benutzer</th>
+                    <th>Ed25519 (Signaturschlüssel)</th>
+                    <th>X25519 (Cipherschlüssel)</th>
+                    <th>Registriert</th>
+                </tr>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.ed25519_public.hex() }}</td>
+                    <td>{{ user.x25519_public.hex() }}</td>
+                    <td style="white-space: nowrap;">{{ user.registration_time }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </body>
+</html>
+
+

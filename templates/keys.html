@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>CMARC-Schlüssel: {{ user.name }}</title>
+        <link rel="shortcut icon" href="/static/img/favicon.svg" type="image/svg+xml">
+        <style>
+            table, th, td {
+                border: 1px solid #000;
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div style="width: 55ch;">
+            <a href="/"><img src="/static/img/logo.svg" alt="" style="width: 100%; margin-bottom: 1em;"></a>
+            <table style="width: 100%;">
+                <tr>
+                    <th colspan="2" style="font-size: 1.5rem;">{{ user.name }}</th>
+                </tr>
+                <tr>
+                    <th>Registriert</th>
+                    <td>{{ user.registration_time }}</td>
+                </tr>
+                <tr>
+                    <th colspan="2">Ed25519 (Signaturschlüssel)</th>
+                </tr>
+                <tr>
+                    <th>Privat</th>
+                    <td>{{ user.get_ed25519_sk(aes_key).hex() }}</td>
+                </tr>
+                <tr>
+                    <th>Öffentlich</th>
+                    <td>{{ user.ed25519_public.hex() }}</td>
+                </tr>
+                <tr>
+                    <th colspan="2">X25519 (Cipherschlüssel)</th>
+                </tr>
+                <tr>
+                    <th>Privat</th>
+                    <td>{{ user.get_x25519_sk(aes_key).hex() }}</td>
+                </tr>
+                <tr>
+                    <th>Öffentlich</th>
+                    <td>{{ user.x25519_public.hex() }}</td>
+                </tr>
+            </table>
+        </div>
+    </body>
+</html>
+
